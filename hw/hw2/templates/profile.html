@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}個人資料｜金門大學校務入口{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">STUDENT PROFILE</p><h1>個人資料</h1><p class="muted">檢視目前登入帳號的基本資料。</p></div></div>
+<section class="panel profile-panel"><div class="avatar">{{ student['name'][0] }}</div><div><h2>{{ student['name'] }}</h2><p class="muted">{{ student['department'] }}</p></div><dl class="profile-list"><dt>學號</dt><dd>{{ student['student_id'] }}</dd><dt>系所</dt><dd>{{ student['department'] }}</dd><dt>年級</dt><dd>{{ student['grade'] }} 年級</dd><dt>電子郵件</dt><dd>{{ student['email'] }}</dd></dl></section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}課程查詢／選課｜金門大學校務入口{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">COURSE MANAGEMENT</p><h1>課程查詢／選課</h1><p class="muted">搜尋課程並進行模擬加選或退選。</p></div></div>
+<section class="panel">
+<form method="get" class="search-form"><input name="q" value="{{ keyword }}" placeholder="輸入課程代碼、課程名稱或教師姓名"><button class="primary">搜尋課程</button><a class="button secondary" href="{{ url_for('courses') }}">清除</a></form>
+<div class="table-wrap"><table><thead><tr><th>課程代碼</th><th>課程名稱</th><th>授課教師</th><th>學分</th><th>上課時間</th><th>選課人數</th><th>操作</th></tr></thead><tbody>
+{% for c in courses %}<tr><td>{{ c['course_id'] }}</td><td><b>{{ c['name'] }}</b><small class="sub">{{ c['classroom'] }}</small></td><td>{{ c['teacher'] }}</td><td>{{ c['credits'] }}</td><td>週{{ ['一','二','三','四','五','六','日'][c['day']-1] }} {{ c['period_start'] }}–{{ c['period_end'] }} 節</td><td>{{ c['enrolled'] }} / {{ c['capacity'] }}</td><td>{% if c['selected'] %}<form method="post" action="{{ url_for('drop_course', course_id=c['course_id']) }}"><button class="danger small">退選</button></form>{% else %}<form method="post" action="{{ url_for('add_course', course_id=c['course_id']) }}"><button class="primary small">加選</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="empty">沒有符合條件的課程。</td></tr>{% endfor %}
+</tbody></table></div>
+<p class="hint">系統會檢查重複選課、課程衝堂及名額。此處選課僅儲存在本機 SQLite 示範資料庫。</p>
+</section>
+{% endblock %}

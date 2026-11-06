@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}金門大學校務入口{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% if session.get('student_id') %}
+<header class="topbar">
+  <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">K</span><span>國立金門大學<br><small>學生校務入口（課堂展示版）</small></span></a>
+  <div class="top-actions"><span>{{ session.get('student_name') }} 同學</span><a href="{{ url_for('logout') }}">登出</a></div>
+</header>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-label">學生服務</div>
+    <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">▦　首頁總覽</a>
+    <a href="{{ url_for('courses') }}" class="{{ 'active' if request.endpoint == 'courses' }}">▤　課程查詢／選課</a>
+    <a href="{{ url_for('timetable') }}" class="{{ 'active' if request.endpoint == 'timetable' }}">▦　個人課表</a>
+    <a href="{{ url_for('grades') }}" class="{{ 'active' if request.endpoint == 'grades' }}">▥　學期成績</a>
+    <a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint == 'profile' }}">♙　個人資料</a>
+    <div class="side-note">學期：115 學年度第 1 學期<br>系統版本：課堂專題 Demo</div>
+  </aside>
+  <main class="main">
+{% else %}
+<main class="login-main">
+{% endif %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for category, message in messages %}
+      <div class="alert {{ category }}">{{ message }}</div>
+    {% endfor %}{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+{% if session.get('student_id') %}</div>{% endif %}
+<footer>國立金門大學校務入口模擬系統 · 本專案為教學展示，不連接學校正式校務資料庫</footer>
+</body>
+</html>

@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}錯誤 {{ code }}{% endblock %}
+{% block content %}<section class="panel error-panel"><h1>{{ code }}</h1><p>{{ message }}</p><a class="button primary" href="{{ url_for('dashboard') }}">返回首頁</a></section>{% endblock %}

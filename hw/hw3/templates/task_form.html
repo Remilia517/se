@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ mode }}事項｜StudyFlow{% endblock %}
+{% block content %}
+<div class="page-title"><div><p class="eyebrow">TASK EDITOR</p><h1>{{ mode }}事項</h1><p class="muted">填寫任務內容與截止日期。</p></div><a class="btn ghost" href="{{ url_for('task_list') }}">返回列表</a></div>
+<section class="card form-card"><form method="post" class="task-form">
+<label>事項名稱 <em>*</em><input name="title" required maxlength="100" value="{{ task.get('title','') if task else '' }}" placeholder="例如：資料庫期末報告"></label>
+<label>所屬課程<input name="course" maxlength="60" value="{{ task.get('course','') if task else '' }}" placeholder="例如：資料庫系統"></label>
+<label>截止日期 <em>*</em><input type="date" name="due_date" required value="{{ task.get('due_date','') if task else '' }}"></label>
+<label>優先級<select name="priority">{% for p in ['高','中','低'] %}<option value="{{ p }}" {{ 'selected' if task and task.get('priority')==p }}>{{ p }}</option>{% endfor %}</select></label>
+{% if mode=='編輯' %}<label>目前狀態<select name="status">{% for s in ['待處理','進行中','已完成'] %}<option value="{{ s }}" {{ 'selected' if task and task.get('status')==s }}>{{ s }}</option>{% endfor %}</select></label>{% endif %}
+<label class="wide">詳細說明<textarea name="description" rows="4" placeholder="記錄作業要求、注意事項或準備進度">{{ task.get('description','') if task else '' }}</textarea></label>
+<div class="form-actions"><button class="btn" type="submit">儲存事項</button><a class="btn ghost" href="{{ url_for('task_list') }}">取消</a></div>
+</form></section>
+{% endblock %}

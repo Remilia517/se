@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}學期成績｜金門大學校務入口{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">ACADEMIC RECORD</p><h1>學期成績</h1><p class="muted">115 學年度第 1 學期 · 範例成績資料</p></div></div>
+<section class="panel"><div class="notice">注意：以下成績為課堂展示用的模擬資料，不代表學校正式成績。</div><div class="table-wrap"><table><thead><tr><th>課程代碼</th><th>課程名稱</th><th>平時成績</th><th>期中成績</th><th>學期成績</th></tr></thead><tbody>{% for r in records %}<tr>{% for v in r %}<td>{{ v }}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

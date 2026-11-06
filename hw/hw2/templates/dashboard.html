@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}首頁總覽｜金門大學校務入口{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">STUDENT PORTAL</p><h1>首頁總覽</h1><p class="muted">歡迎使用學生校務入口，以下為你的學籍與修課摘要。</p></div><span class="term-pill">115-1 學期</span></div>
+<section class="welcome panel"><div><span class="eyebrow light">WELCOME BACK</span><h2>{{ student['name'] }} 同學，您好！</h2><p>{{ student['department'] }} · {{ student['grade'] }} 年級 · {{ student['student_id'] }}</p></div><div class="welcome-symbol">K</div></section>
+<div class="stats-grid">
+  <div class="stat panel"><span>目前修課數</span><strong>{{ courses|length }}</strong><small>門課程</small></div>
+  <div class="stat panel"><span>本學期學分</span><strong>{{ credits }}</strong><small>學分</small></div>
+  <div class="stat panel"><span>年級</span><strong>{{ student['grade'] }}</strong><small>年級</small></div>
+</div>
+<div class="content-grid">
+  <section class="panel"><div class="section-title"><h2>我的課程</h2><a href="{{ url_for('timetable') }}">查看課表 →</a></div>
+  {% if courses %}<div class="table-wrap"><table><thead><tr><th>課程名稱</th><th>星期</th><th>節次</th><th>教室</th></tr></thead><tbody>
+  {% for c in courses %}<tr><td><b>{{ c['name'] }}</b><small class="sub">{{ c['course_id'] }}</small></td><td>週{{ ['一','二','三','四','五','六','日'][c['day']-1] }}</td><td>{{ c['period_start'] }}–{{ c['period_end'] }}</td><td>{{ c['classroom'] }}</td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<p class="empty">目前尚未選課。</p>{% endif %}</section>
+  <section class="panel"><div class="section-title"><h2>校務公告</h2><span class="muted">最新消息</span></div>
+  {% for a in announcements %}<article class="announcement"><time>{{ a['posted_at'] }}</time><h3>{{ a['title'] }}</h3><p>{{ a['content'] }}</p></article>{% endfor %}</section>
+</div>
+{% endblock %}

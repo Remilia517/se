@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}學生登入｜金門大學校務入口{% endblock %}
+{% block content %}
+<section class="login-card">
+  <div class="login-emblem">K</div>
+  <p class="eyebrow">KINMEN UNIVERSITY · STUDENT PORTAL</p>
+  <h1>學生校務系統</h1>
+  <p class="muted">請使用展示帳號登入系統</p>
+  <form method="post" class="form-stack">
+    <label>學生學號<input name="student_id" placeholder="請輸入學號" required value="{{ request.form.get('student_id','') }}"></label>
+    <label>登入密碼<input name="password" type="password" placeholder="請輸入密碼" required></label>
+    <button class="primary full" type="submit">登入系統</button>
+  </form>
+  <div class="demo-account"><b>展示帳號</b><br>學號：412630001<br>密碼：123456</div>
+</section>
+{% endblock %}
