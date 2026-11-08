@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.py[cod]
+.venv/
+\n.pytest_cache/\n.e2e/node_modules/\ne2e/node_modules/\ne2e/playwright-report/\ne2e/test-results/\n

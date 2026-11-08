@@ -67,6 +67,3 @@ knu_portal_project/
 ```powershell
 py -3.12 -m unittest discover -s tests -v
 ```
-
-## 可搭配 OpenCode + Big Pickle 的擴充方向
-可要求 AI 逐步新增：課程管理後台、成績 CRUD、學生註冊、密碼雜湊、CSRF 保護、匯出課表 PDF、單元測試與操作紀錄。請先閱讀現有架構再修改，保留 SQLite 資料與既有路由。

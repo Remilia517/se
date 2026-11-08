@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}截止日期月曆｜StudyFlow{% endblock %}
+{% block content %}
+<div class="page-title"><div><p class="eyebrow">DEADLINE CALENDAR</p><h1>截止日期月曆</h1><p class="muted">依照截止日期查看每個月的課程作業。</p></div>
+<div class="calendar-nav"><a class="btn ghost" href="{{ url_for('calendar', month=previous) }}">← 上個月</a><strong>{{ month_label }}</strong><a class="btn ghost" href="{{ url_for('calendar', month=next) }}">下個月 →</a></div></div>
+<section class="card calendar-card">
+<div class="calendar-grid calendar-weekdays">{% for day in ['一','二','三','四','五','六','日'] %}<div>{{ day }}</div>{% endfor %}</div>
+<div class="calendar-grid">
+{% for day in cells %}
+<div class="calendar-day {{ 'today' if day and month ~ '-' ~ '%02d'|format(day) == today else '' }}">
+{% if day %}<b class="day-number">{{ day }}</b>
+{% for task in grouped.get(day, []) %}
+<a class="calendar-task {{ 'is-done' if task['status']=='已完成' else '' }}" href="{{ url_for('edit_task', task_id=task['id']) }}" title="{{ task['title'] }}">{{ task['title'] }}</a>
+{% endfor %}{% endif %}
+</div>
+{% endfor %}
+</div>
+</section>
+<p class="muted calendar-hint">點擊月曆中的事項即可編輯；紅色日期框表示今天。</p>
+{% endblock %}

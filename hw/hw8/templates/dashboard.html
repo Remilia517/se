@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}總覽｜StudyFlow{% endblock %}
+{% block content %}
+<section class="hero"><div><p class="eyebrow">YOUR STUDY WORKSPACE</p><h1>把每一項任務，<br>一步步完成。</h1><p>集中管理課程作業、截止日期與進度，不再遺漏重要事項。</p><a class="btn light-btn" href="{{ url_for('create_task') }}">＋ 新增待辦事項</a></div><div class="hero-art"><div class="hero-circle">✓</div><div class="hero-caption">PLAN · FOCUS · COMPLETE</div></div></section>
+<div class="stats">
+<div class="stat"><span>全部事項</span><strong>{{ total }}</strong><small>項任務</small></div>
+<div class="stat"><span>尚未完成</span><strong>{{ active }}</strong><small>項待處理／進行中</small></div>
+<div class="stat"><span>已逾期</span><strong class="{{ 'red' if overdue else '' }}">{{ overdue }}</strong><small>項需要留意</small></div>
+<div class="stat"><span>完成率</span><strong>{{ completion }}%</strong><small>整體完成進度</small></div>
+</div>
+<div class="grid">
+<section class="card"><div class="card-head"><div><p class="eyebrow">TASK OVERVIEW</p><h2>近期事項</h2></div><a href="{{ url_for('task_list') }}">查看全部 →</a></div>
+{% if tasks %}<div class="task-list">
+{% for t in tasks %}<article class="task-row"><div class="task-check {{ 'checked' if t['status']=='已完成' else '' }}">{{ '✓' if t['status']=='已完成' else '' }}</div><div class="task-info"><b>{{ t['title'] }}</b><small>{{ t['course'] or '未分類' }} · 截止 {{ t['due_date']|date_label }}</small></div><span class="priority {{ t['priority'] }}">{{ t['priority'] }}</span><span class="status">{{ t['status'] }}</span></article>{% endfor %}
+</div>{% else %}<p class="empty">目前沒有事項，新增第一項任務吧！</p>{% endif %}
+</section>
+<aside class="card progress-card"><p class="eyebrow">YOUR PROGRESS</p><h2>學習進度</h2><div class="progress-ring" style="--progress:{{ completion }}%"><div><strong>{{ completion }}%</strong><small>已完成</small></div></div><p class="muted">已完成 {{ completed }} 項，共 {{ total }} 項事項。</p><div class="mini-stats"><span>進行中與待處理 <b>{{ active }}</b></span><span>尚未到期 <b>{{ upcoming }}</b></span></div></aside>
+</div>
+<section class="card analytics-card">
+  <div class="card-head"><div><p class="eyebrow">COURSE ANALYTICS</p><h2>各課程完成進度</h2></div><span class="muted">未來 7 天到期：{{ week_count }} 項</span></div>
+  {% if courses %}
+  <div class="course-bars">
+    {% for course in courses %}
+    <div class="course-bar-row">
+      <div class="course-bar-label"><b>{{ course.name }}</b><span>{{ course.completed }}/{{ course.total }} 項 · {{ course.rate }}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:{{ course.rate }}%"></div></div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}<p class="empty">新增課程事項後，這裡會顯示課程進度。</p>{% endif %}
+</section>
+{% endblock %}

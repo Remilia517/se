@@ -54,9 +54,3 @@ student_life_hub/
 ```powershell
 py -3.12 -m unittest discover -s tests -v
 ```
-
-## AI 輔助開發
-可搭配 OpenCode + Big Pickle 或 Muse Spark 1.3，先要求模型閱讀 `app.py`、templates 與測試，再逐步加入月曆檢視、CSV 匯出、Email 提醒、課程分類統計與登入功能。修改後務必執行單元測試並人工驗證。
-
-## 注意
-本專案為課堂展示工具，資料儲存在本機 SQLite。若公開部署，需補上帳號驗證、CSRF 防護、安全的 SECRET_KEY、權限管理及 HTTPS。

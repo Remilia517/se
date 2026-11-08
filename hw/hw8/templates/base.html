@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}StudyFlow 學習管理中心{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('dashboard') }}"><span class="logo">S</span><span>StudyFlow<small>學生學習與作業管理中心</small></span></a>
+  <nav><a href="{{ url_for('dashboard') }}">總覽</a><a href="{{ url_for('task_list') }}">待辦事項</a><a href="{{ url_for('calendar') }}">月曆</a><a href="{{ url_for('export_csv') }}">匯出 CSV</a><a class="nav-add" href="{{ url_for('create_task') }}">＋ 新增事項</a></nav>
+</header>
+<main class="container">
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% for category,message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+<footer>StudyFlow · 學生學習與作業管理工具（課堂專題）</footer>
+</body></html>

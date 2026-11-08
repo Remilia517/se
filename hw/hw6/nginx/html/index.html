@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StudyTask Docker 微服務</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f1f5f9;color:#1e293b;font-family:Arial,"Noto Sans TC",sans-serif}
+header{background:#172554;color:white;padding:25px max(20px,calc((100% - 900px)/2))}
+header h1{margin:0 0 6px}header p{margin:0;color:#c7d2fe}main{max-width:900px;margin:28px auto;padding:0 18px}
+.panel,.health{background:white;border:1px solid #e2e8f0;border-radius:13px;padding:20px;margin-bottom:17px}
+.health{display:flex;gap:10px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:#eab308}.dot.ok{background:#16a34a}
+form{display:grid;grid-template-columns:2fr 1.2fr 1fr auto;gap:9px}input,button{padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}
+button{background:#2563eb;color:white;border:0;cursor:pointer}.task{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid #e2e8f0}
+.task:last-child{border:0}.info{flex:1}.info small{display:block;color:#64748b;margin-top:4px}.done .name{text-decoration:line-through;color:#94a3b8}
+.delete{background:#fee2e2;color:#991b1b}.empty{text-align:center;color:#94a3b8;padding:20px}
+@media(max-width:650px){form{grid-template-columns:1fr 1fr}form button{grid-column:span 2}}
+</style></head><body>
+<header><h1>StudyTask</h1><p>Docker 微服務示範｜Nginx + Python Flask + PostgreSQL</p></header>
+<main><section class="health"><span id="dot" class="dot"></span><b id="health">正在檢查服務連線…</b><small>Nginx Reverse Proxy → Flask API → PostgreSQL</small></section>
+<section class="panel"><h2>新增作業</h2><form id="form">
+<input id="title" placeholder="作業名稱（必填）" required maxlength="160"><input id="course" placeholder="課程名稱">
+<input id="date" type="date"><button>新增作業</button></form></section>
+<section class="panel"><h2>作業清單</h2><p>資料儲存在 PostgreSQL，容器重建後仍會保留。</p><ul id="tasks" style="list-style:none;padding:0">載入中…</ul></section></main>
+<script>
+const $=s=>document.querySelector(s), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function health(){try{let r=await fetch("/api/health"),d=await r.json();if(!r.ok)throw Error(d.message);$("#dot").classList.add("ok");$("#health").textContent="系統正常｜API 已連線｜資料庫已連線"}catch(e){$("#health").textContent="連線異常："+e.message}}
+async function load(){try{let r=await fetch("/api/tasks"),a=await r.json();if(!a.length){$("#tasks").innerHTML='<li class="empty">目前沒有作業，新增第一筆試試看。</li>';return}
+$("#tasks").innerHTML=a.map(t=>`<li class="task ${t.status==="done"?"done":""}"><input type="checkbox" ${t.status==="done"?"checked":""} onchange="toggle(${t.id},this.checked)"><div class="info"><b class="name">${esc(t.title)}</b><small>${esc(t.course||"未指定課程")} · 截止：${esc(t.due_date||"未設定")}</small></div><button class="delete" onclick="removeTask(${t.id})">刪除</button></li>`).join("")}catch(e){$("#tasks").textContent="無法載入："+e.message}}
+$("#form").onsubmit=async e=>{e.preventDefault();let r=await fetch("/api/tasks",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:$("#title").value,course:$("#course").value,due_date:$("#date").value})}),d=await r.json();if(!r.ok){alert(d.error);return}e.target.reset();load()};
+async function toggle(id,done){await fetch("/api/tasks/"+id,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:done?"done":"pending"})});load()}
+async function removeTask(id){if(confirm("確定刪除？")){await fetch("/api/tasks/"+id,{method:"DELETE"});load()}}
+health();load();
+</script></body></html>

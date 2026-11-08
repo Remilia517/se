@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "studyflow-cloudflare",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-08",
+  "compatibility_flags": [
+    "global_fetch_strictly_public"
+  ],
+  "account_id": "ae623b18a7256578a04e00e4f9172b69",
+  "d1_databases": [
+    {
+      "binding": "studyflow_db",
+      "database_name": "studyflow-db",
+      "database_id": "1aa86bd6-566d-40f2-b7a8-27e84a926bce"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "upload_source_maps": true
+}
